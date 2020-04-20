@@ -1,0 +1,53 @@
+table,
+th,
+td {
+    border: 1px solid black;
+    /* padding: 5px; */
+    outline: 0;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+th,
+td {
+    min-width: 100px;
+}
+
+tr {
+    height: 34px;
+}
+
+td {
+    width: inherit;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.ActiveCell {
+    border: 3px solid #2196f3;
+}
+
+.EditCell {
+    box-shadow: 0px 5px 15px -3px rgba(0, 0, 0, 0.4);
+}
+
+.ActiveCell input {
+    line-height: 18px;
+    border: 0;
+    padding: 5px;
+    outline: 0;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1.1em;
+}
+
+td span {
+    width: inherit;
+    box-sizing: border-box;
+    line-height: 18px;
+    padding: 5px;
+    font-size: 1.1em;
+}
