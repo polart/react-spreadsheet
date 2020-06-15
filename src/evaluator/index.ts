@@ -1,5 +1,5 @@
 import { State, StateDependencies } from "../Sheet/types";
-import { getOrder } from "./dag";
+import { getOrder, DagCycleError } from "./dag";
 import { evaluate, Tokenizer } from "./expression";
 
 type Values = { [key: string]: string | number };
@@ -18,12 +18,10 @@ const fillInDependencies = (state: State) => {
         }
         let dependsOnCells = new Set<string>();
         try {
-            const ans = new Tokenizer(
-                data.formula.slice(1)
-            ).tokenize();
+            const ans = new Tokenizer(data.formula.slice(1)).tokenize();
             dependsOnCells = ans.dependsOnCells;
-        } catch(e) {
-            data.value = '#ERR!';
+        } catch (e) {
+            data.value = "#ERR!";
         }
         // const { dependsOnCells } = new Tokenizer(
         //     data.formula.slice(1)
@@ -75,8 +73,14 @@ export const recalculateSheet = (state: State) => {
 
     cleanupDependencies(newState);
     fillInDependencies(newState);
-    const order = getCellsOrder(newState);
-    calcValues(newState, order);
+    try {
+        const order = getCellsOrder(newState);
+        calcValues(newState, order);
+    } catch (e) {
+        if (e instanceof DagCycleError) {
+            newState[e.cell].value = "#REF!";
+        }
+    }
 
     return newState;
 };

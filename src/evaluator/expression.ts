@@ -5,15 +5,15 @@ interface Token {
     value: string;
 }
 
-type NumberNode = { number: string };
-type CellNode = { cell: string };
-type UnaryNode = { unary: { operator: string; expr: Tree } };
+type NumberNode = { number: string; type: "number" };
+type CellNode = { cell: string; type: "cell" };
+type UnaryNode = { unary: { operator: string; expr: Tree }; type: "unary" };
+type BinaryNode = {
+    binary: { operator: string; left: Tree; right: Tree };
+    type: "binary";
+};
 
-type Tree =
-    | { binary: { operator: string; left: Tree; right: Tree } }
-    | UnaryNode
-    | NumberNode
-    | { cell: string };
+type Tree = BinaryNode | UnaryNode | NumberNode | CellNode;
 
 type Context = {
     cells: { [key: string]: string | number };
@@ -93,6 +93,7 @@ class Parser {
                     left: expr,
                     right: this.parseMultiplicative(),
                 },
+                type: "binary",
             };
             token = this.peek();
         }
@@ -114,6 +115,7 @@ class Parser {
                     left: expr,
                     right: this.parseUnary(),
                 },
+                type: "binary",
             };
             token = this.peek();
         }
@@ -132,6 +134,7 @@ class Parser {
                     operator: token.value,
                     expr: this.parseUnary(),
                 },
+                type: "unary",
             };
         }
 
@@ -145,6 +148,7 @@ class Parser {
             this.consume();
             return {
                 number: token.value,
+                type: "number",
             };
         }
 
@@ -152,6 +156,7 @@ class Parser {
             this.consume();
             return {
                 cell: token.value,
+                type: "cell",
             };
         }
 
@@ -195,9 +200,8 @@ class Generator {
         return this.exec(this.node);
     }
 
-    exec(node: any) {
-        const type = this.getType(node);
-        switch (type) {
+    exec(node: Tree) {
+        switch (node.type) {
             case "number":
                 return this.execNumber(node);
             case "cell":
@@ -205,19 +209,10 @@ class Generator {
             case "unary":
                 return this.execUnary(node);
             case "binary":
-                return this.execBinary(node.binary);
+                return this.execBinary(node);
             default:
                 throw Error(`Can't exec node ${JSON.stringify(node)}`);
         }
-    }
-
-    getType(node: Tree) {
-        for (const type of ["number", "cell", "unary", "binary"]) {
-            if (node.hasOwnProperty(type)) {
-                return type;
-            }
-        }
-        throw Error(`Can't determine a type of node ${JSON.stringify(node)}`);
     }
 
     execNumber(node: NumberNode) {
@@ -232,7 +227,7 @@ class Generator {
     }
 
     execUnary(node: UnaryNode): number {
-        const expr: any = this.exec(node.unary.expr);
+        const expr = this.exec(node.unary.expr) as string;
         switch (node.unary.operator) {
             case "+":
                 return parseFloat(expr);
@@ -243,10 +238,10 @@ class Generator {
         }
     }
 
-    execBinary(node: any): number {
-        const left: any = this.exec(node.left);
-        const right: any = this.exec(node.right);
-        switch (node.operator) {
+    execBinary(node: BinaryNode): number {
+        const left = this.exec(node.binary.left) as string;
+        const right = this.exec(node.binary.right) as string;
+        switch (node.binary.operator) {
             case "+":
                 return parseFloat(left) + parseFloat(right);
             case "-":
@@ -258,7 +253,7 @@ class Generator {
             case "^":
                 return parseFloat(left) ** parseFloat(right);
             default:
-                throw Error(`Unknown operator ${node.operator}`);
+                throw Error(`Unknown operator ${node.binary.operator}`);
         }
     }
 }
@@ -279,8 +274,7 @@ export const evaluate = (
             ...CONTEXT,
             cells: cellData,
         }).generate();
-    } catch(e) {
-        return '#ERR!'
+    } catch (e) {
+        return "#ERR!";
     }
-
 };

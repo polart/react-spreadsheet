@@ -1,7 +1,9 @@
 export class DagCycleError extends Error {
-    constructor(message: string) {
+    cell: string;
+    constructor(message: string, cell: string) {
         super(message);
         this.name = "DagCycleError";
+        this.cell = cell;
     }
 }
 
@@ -33,9 +35,10 @@ export const getOrder = (cells: {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    for (let [_, { dependsOn, dependentOn }] of Object.entries(cells)) {
+    for (let [cell, { dependsOn, dependentOn }] of Object.entries(cells)) {
         if (dependsOn.size || dependentOn.size) {
-            throw new DagCycleError("Graph contains at least one cycle");
+            console.log('==> dependentOn', cell, dependentOn);
+            throw new DagCycleError("Graph contains at least one cycle", cell);
         }
     }
 
