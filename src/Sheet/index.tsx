@@ -161,7 +161,7 @@ export const Sheet = () => {
             // @ts-ignore
             ref={tableRef}
         >
-            <TableHead sheetConfig={sheetConfig} />
+            <TableHead sheetConfig={sheetConfig} activeCell={activeCell} />
             <TableBody
                 activeCell={activeCell}
                 setActiveCell={setActiveCell}

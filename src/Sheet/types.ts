@@ -41,6 +41,7 @@ export interface TableProps {
 
 export interface TableHeadProps {
     sheetConfig: SheetConfig;
+    activeCell: ActiveCell;
 }
 
 export interface TableRowProps {

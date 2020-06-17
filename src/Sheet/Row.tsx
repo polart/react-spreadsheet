@@ -3,6 +3,7 @@ import { TableCell } from "./Cell";
 import { TableRowProps } from "./types";
 
 export const TableRow: React.FC<TableRowProps> = (props) => {
+    const isActiveRow = props.rowId === props.activeCell.rowId;
     const cols = props.sheetConfig.cols.map((l) => (
         <TableCell
             rowId={props.rowId}
@@ -15,7 +16,7 @@ export const TableRow: React.FC<TableRowProps> = (props) => {
         />
     ));
     return (
-        <tr>
+        <tr className={`${isActiveRow ? "ActiveRow" : ""}`}>
             <td>{props.rowId}</td>
             {cols}
         </tr>
