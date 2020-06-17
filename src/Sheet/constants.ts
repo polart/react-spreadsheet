@@ -27,5 +27,5 @@ export const LETTERS = [
     "Z",
 ];
 
-export const COLS = 3;
-export const ROWS = 4;
+export const COLS = 10;
+export const ROWS = 20;
