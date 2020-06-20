@@ -1,0 +1,10 @@
+{
+    "version": 2,
+    "scope": "polart",
+    "routes": [
+        {
+            "src": "/react-spreadsheet",
+            "dest": "/build/index.html"
+        }
+    ]
+}
