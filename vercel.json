@@ -1,10 +1,17 @@
 {
     "version": 2,
     "scope": "polart",
+    "github": {
+        "enabled": true
+    },
     "routes": [
         {
             "src": "/react-spreadsheet",
-            "dest": "/build/index.html"
+            "dest": "index.html"
+        },
+        {
+            "src": "/react-spreadsheet/(.*)",
+            "dest": "$1"
         }
     ]
 }
