@@ -7,7 +7,10 @@
     "routes": [
         {
             "src": "/react-spreadsheet",
-            "dest": "index.html"
+            "dest": "index.html",
+            "headers": {
+                "X-Robots-Tag": "index"
+            }
         },
         {
             "src": "/react-spreadsheet/static/(.*)",
