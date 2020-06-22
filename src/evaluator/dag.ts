@@ -7,6 +7,8 @@ export class DagCycleError extends Error {
     }
 }
 
+// Uses Kahn's_algorithm to calculate topological order of DAG
+// https://en.wikipedia.org/wiki/Topological_sorting#Kahn's_algorithm
 export const getOrder = (cells: {
     [key: string]: { dependsOn: Set<string>; dependentOn: Set<string> };
 }) => {
@@ -27,7 +29,6 @@ export const getOrder = (cells: {
         for (let m of Array.from(cells[cell].dependentOn)) {
             cells[cell].dependentOn.delete(m);
             cells[m].dependsOn.delete(cell);
-            // remove edge
             if (!cells[m].dependsOn.size) {
                 set.add(m);
             }

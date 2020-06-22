@@ -1,44 +1,43 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# React Spreadsheet
 
-## Available Scripts
+Simple spreadsheet built with ReactJS.
 
-In the project directory, you can run:
+**Features**:
+- stores state as GET params in URL
+- cells are calculated in a [topological order](./src/evaluator/dag.ts) of a directed acyclic graph
+- custom [expression evaluator](./src/evaluator/expression.ts)
 
-### `yarn start`
+[**Example**](https://polart.dev/react-spreadsheet?A1=Fibonacci&A2=0&A3=1&A4=%3DA2%2BA3&A5=%3DA3%2BA4&A6=%3DA4%2BA5&A7=%3DA5%2BA6&A8=%3DA6%2BA7&A9=%3DA7%2BA8&A10=%3DA8%2BA9&A11=%3DA9%2B10&c=20&r=50)
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![React Spreadsheet](./docs/images/image.png "React Spreadsheet")
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Development
 
-### `yarn test`
+Vagrant Registry is written with ReactJS.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Make sure you have installed NodeJS and Yarn.
 
-### `yarn build`
+Install dependencies
+```
+$ yarn
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Run tests
+```
+$ yarn test
+```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Start dev server
+```
+$ yarn start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Open http://localhost:3000
 
-### `yarn eject`
+## Production build
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Create production build
+```
+$ yarn build
+```
+All files will be in `build` directory
